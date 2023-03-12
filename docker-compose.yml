@@ -1,0 +1,89 @@
+version: '3.4'
+
+services:
+  b3test.api:
+    image: ${DOCKER_REGISTRY-}b3testapi
+    build:
+      context: .
+      dockerfile: src/B3Test.Api/Dockerfile
+    ports:
+    - 8000:80
+    networks:
+    - b3test_api_network
+
+  b3test.worker:
+    image: ${DOCKER_REGISTRY-}b3testworker
+    build:
+      context: .
+      dockerfile: src/B3Test.Worker/Dockerfile
+    networks:
+    - b3test_api_network
+  
+  prometheus:
+    image: prometheus-image
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+    - 9090:9090    
+    volumes:
+    - './prometheus/data:/data'
+    networks:
+    - b3test_api_network
+
+  grafana:
+    image: grafana-image
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+    - 3000:3000
+    networks:
+    - b3test_api_network
+
+  rabbitmq-container:
+    image: rabbitmq:3-management-alpine
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5672"]
+      interval: 5s
+      timeout: 15s
+      retries: 5
+    ports:
+    - 5672:5672
+    - 15672:15672
+    networks:
+    - b3test_api_network
+  
+  sqlserver-container:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      SA_PASSWORD: "sqlPass#123"
+      ACCEPT_EULA: "Y"
+    ports:
+    - 1433:1433
+    networks:
+    - b3test_api_network
+
+  datadog-agent:
+    image: datadog/agent:7.44.0-rc.2-jmx
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - /proc/:/host/proc/:ro
+    - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    ports:
+    - 8125:8125
+    environment:
+    - DD_API_KEY=44e42bd5ce6239b48bf36afa75758dc7
+    - DD_SITE=datadoghq.com
+    - DD_APM_ENABLED=true
+    - DD_APM_NON_LOCAL_TRAFFIC=true
+    - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    - DD_AC_EXCLUDE=name:datadog-agent
+    networks:
+    - b3test_api_network
+
+networks:
+  b3test_api_network:
+    driver: bridge

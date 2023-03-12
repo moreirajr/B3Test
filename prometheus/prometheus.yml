@@ -1,0 +1,5 @@
+scrape_configs:
+  - job_name: "B3Test.Api"
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["IP_ADDRS_HOST:9090"]

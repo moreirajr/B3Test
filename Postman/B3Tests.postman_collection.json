@@ -1,0 +1,60 @@
+{
+	"info": {
+		"_postman_id": "8f7da813-e4e9-4d0f-865c-9a8cbc7031a1",
+		"name": "B3Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Listar Tarefas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:55784/api/v1/tarefas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "55784",
+					"path": [
+						"api",
+						"v1",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar Tarefa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"descricao\": \"Test\",\r\n  \"status\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:55784/api/v1/tarefas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "55784",
+					"path": [
+						"api",
+						"v1",
+						"tarefas"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
