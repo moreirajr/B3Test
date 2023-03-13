@@ -18,9 +18,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseCors("CorsPolicy");
 app.MapControllers();
 
 //Use application monitoring
 app.ConfigureApplicationMonitoring(builder.Configuration);
+
+app.SupportLocalizationOptions(builder.Configuration);
 
 app.Run();

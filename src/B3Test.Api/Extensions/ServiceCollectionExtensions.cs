@@ -15,6 +15,15 @@ namespace B3Test.Api.Extensions
         public static void Configure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.SetIsOriginAllowed((host) => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithExposedHeaders("Content-Disposition"));
+            });
             services.ConfigureApiVersioning();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>

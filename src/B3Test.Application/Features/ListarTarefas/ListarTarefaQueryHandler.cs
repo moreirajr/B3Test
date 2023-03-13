@@ -34,8 +34,10 @@ namespace B3Test.Application.Features.ListarTarefas
                 return tarefas.Select(x => new ListarTarefaResponse
                 {
                     Id = x.Id,
+                    Data = x.Data,
                     Descricao = x.Descricao,
-                    Status = x.Status
+                    Status = x.Status,
+                    DescricaoStatus = x.Status.ToString()
                 });
             }
             catch (Exception ex)

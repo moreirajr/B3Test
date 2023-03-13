@@ -16,11 +16,26 @@ namespace B3Test.Application.Features.AdicionarTarefas
             _tarefaRepository = tarefaRepository;
         }
 
+        private AdicionarTarefaResponse ErrorResult(IEnumerable<string> errors)
+        {
+            var errorResult = new AdicionarTarefaResponse();
+            errorResult.Errors = errors;
+            return errorResult;
+        }
+
         public async Task<AdicionarTarefaResponse> Handle(AdicionarTarefaCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var tarefa = Tarefa.Create(request.Descricao!, request.Status);
+                var validator = new AdicionarTarefaCommandValidator();
+                var validationResult = await validator.ValidateAsync(request, cancellationToken);
+                if (!validationResult.IsValid)
+                {
+                    var errors = validationResult.Errors.Select(e => e.ErrorMessage);
+                    return ErrorResult(errors);
+                }
+
+                var tarefa = Tarefa.Create(request.Descricao!, request.Data, request.Status);
 
                 await _tarefaRepository.Adicionar(tarefa);
                 await _tarefaRepository.UnitOfWork.SaveChangesAsync(cancellationToken);

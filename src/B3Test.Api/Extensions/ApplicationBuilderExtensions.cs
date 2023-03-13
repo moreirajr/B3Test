@@ -17,5 +17,17 @@ namespace B3Test.Api.Extensions
             if (configurator != null)
                 configurator.Configure(monitoringConfiguration);
         }
+
+        public static void SupportLocalizationOptions(this IApplicationBuilder app, IConfiguration configuration)
+        {
+            var supportedCultures = configuration.GetSection("SupportedCultures").Get<string[]>();
+
+            var localizationOptions = new RequestLocalizationOptions();
+            localizationOptions.AddSupportedCultures(supportedCultures);
+            localizationOptions.AddSupportedUICultures(supportedCultures);
+            localizationOptions.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(supportedCultures[0]);
+
+            app.UseRequestLocalization(localizationOptions);
+        }
     }
 }

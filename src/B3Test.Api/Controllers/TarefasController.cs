@@ -24,6 +24,7 @@ namespace B3Test.Api.Controllers
         {
             var commandResult = await _mediator.Send(new AdicionarTarefaCommand(request));
             if (commandResult == null) return BadRequest(Resources.error);
+            if (commandResult.HasErrors) return BadRequest(commandResult.Errors);
             return Ok(commandResult);
         }
 

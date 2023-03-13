@@ -7,6 +7,7 @@ namespace B3Test.Domain.Events
     public class TarefaAdicionadaEvent : INotification
     {
         public Guid Id { get; set; }
+        public DateTime Data { get; set; }
         public string? Descricao { get; set; }
         public EStatusTarefa Status { get; set; }
 
@@ -15,6 +16,7 @@ namespace B3Test.Domain.Events
         public TarefaAdicionadaEvent(Tarefa tarefa)
         {
             Id = tarefa.Id;
+            Data = tarefa.Data;
             Descricao = tarefa.Descricao;
             Status = tarefa.Status;
         }

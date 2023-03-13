@@ -5,6 +5,7 @@ namespace B3Test.Application.Features.AdicionarTarefas
     public class AdicionarTarefaRequest
     {
         public string? Descricao { get; set; }
+        public DateTime Data { get; set; }
         public EStatusTarefa Status { get; set; }
     }
 }

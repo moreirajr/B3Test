@@ -18,6 +18,9 @@ namespace B3Test.Infrastructure.Maps
                 .HasMaxLength(250)
                 .IsRequired();
 
+            builder.Property(p => p.Data)
+                .IsRequired();
+
             builder.Property(p => p.Status)
                 .IsRequired();
         }

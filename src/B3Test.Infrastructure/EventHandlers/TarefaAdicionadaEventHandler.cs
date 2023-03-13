@@ -24,6 +24,7 @@ namespace B3Test.Infrastructure.EventHandlers
                 await _producer.PublishAsync(new NovaTarefaMessage
                 {
                     Id = notification.Id,
+                    Data = notification.Data,
                     Descricao = notification.Descricao,
                     Status = notification.Status
                 });
